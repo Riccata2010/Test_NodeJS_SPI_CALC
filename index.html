@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Node.js SPI Calc - Test</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8" />
+    <style>
+        body {
+            background: #fff;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div>
+        <div>
+            <p><strong>NOTE:</strong> This is a test for SPI Max7219 a compact serial input/out-put display (7-segment numeric LED displays of up to 8 digit)</p>
+            <br>
+        </div>
+        <div>
+            <input type="number" id="num-a" value="0">
+            <br>
+            <input type="button" id="sum" value="+" onclick="setOpe('0');">
+            <input type="button" id="min" value="-" onclick="setOpe('1');">
+            <input type="button" id="mul" value="*" onclick="setOpe('2');">
+            <input type="button" id="div" value="/" onclick="setOpe('3');">
+            <br>
+            <input type="number" id="num-b" value="0">
+            <br>
+            <input type="button" id="equ" value="=" onclick="sendToPI();">
+            <h2 id="log"></h2>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+
+        var ope = null;
+
+        function setOpe(v) {
+            this.ope = v;
+        }
+
+        function sendToPI() {
+            var a = document.getElementById("num-a").value;
+            var b = document.getElementById("num-b").value;
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+                if (xhttp.readyState == 4 && xhttp.status == 200) {
+                    //document.getElementById("log").innerHTML = xhttp.responseText;
+                    alert(xhttp.responseText);
+                }
+            };
+            var req = "a=" + a + "&&b=" + b + "&&o=" + ope;
+            console.log(req);
+            xhttp.open("GET", req, true);
+            xhttp.send();
+        }
+
+    </script>
+
+</body>
+
+</html>
